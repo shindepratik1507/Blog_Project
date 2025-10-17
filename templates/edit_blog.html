@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Blog - {{ blog.title }}{% endblock %}
+
+{% block content %}
+<section class="container" style="max-width: 800px; margin: 2rem auto;">
+    <div class="card">
+        <div class="card-header">
+            <h2>✏️ Edit Blog Post</h2>
+            <p>Make changes to your blog post</p>
+        </div>
+
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data" id="blog-form">
+                <div class="form-group">
+                    <label for="title" class="form-label">Blog Title</label>
+                    <input type="text" id="title" name="title" class="form-control" required 
+                           value="{{ blog.title }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="image" class="form-label">Featured Image</label>
+                    {% if blog.image_path %}
+                        <div class="current-image mb-2">
+                            <img src="{{ url_for('static', filename=blog.image_path) }}" 
+                                 alt="Current image" style="max-width: 200px; border-radius: 8px;">
+                            <p><small class="text-muted">Current image (leave empty to keep this image)</small></p>
+                        </div>
+                    {% endif %}
+                    <input type="file" id="image" name="image" class="form-control" 
+                           accept="image/jpeg,image/jpg,image/png,image/gif">
+                    <small class="text-muted">Upload new image to replace current one (Max: 5MB)</small>
+                    <div id="image-preview" style="margin-top: 1rem;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="content" class="form-label">Blog Content</label>
+                    <textarea id="content" name="content" class="form-control large" required>{{ blog.content }}</textarea>
+                </div>
+
+                <div class="d-flex justify-between align-center">
+                    <button type="submit" class="btn btn-lg">
+                        💾 Update Blog
+                    </button>
+                    <div class="gap-2">
+                        <a href="{{ url_for('view_blog', id=blog.id) }}" class="btn btn-secondary">Cancel</a>
+                        <a href="{{ url_for('my_blogs') }}" class="btn btn-secondary">My Blogs</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

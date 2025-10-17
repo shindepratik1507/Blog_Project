@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Blog Writing Platform{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <h1>Share Your Stories</h1>
+        <p>A modern platform for writers to create, share, and discover amazing content. Join our community of passionate writers and readers.</p>
+        {% if not session.user_id %}
+            <a href="{{ url_for('signup') }}" class="btn btn-lg">Start Writing Today</a>
+        {% else %}
+            <a href="{{ url_for('write_blog') }}" class="btn btn-lg">Write New Blog</a>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Search Bar -->
+<section class="container">
+    <div class="search-container">
+        <form method="GET" action="{{ url_for('search') }}" class="search-form">
+            <input type="text" name="q" placeholder="Search blogs..." class="search-input form-control" 
+                   value="{{ request.args.get('q', '') }}">
+            <span class="search-icon">🔍</span>
+        </form>
+    </div>
+</section>
+
+<!-- Blog Grid -->
+<section class="container">
+    {% if blogs %}
+        <div class="blog-grid">
+            {% for blog in blogs %}
+                <article class="blog-card">
+                    {% if blog.image_path %}
+                        <img src="{{ url_for('static', filename=blog.image_path) }}" alt="{{ blog.title }}" loading="lazy">
+                    {% endif %}
+
+                    <div class="blog-card-content">
+                        <h3>{{ blog.title }}</h3>
+
+                        <div class="blog-meta">
+                            <span class="blog-author">{{ blog.author_name }}</span>
+                            <span class="blog-date">{{ blog.created_at|format_date_short }}</span>
+                        </div>
+
+                        <p>{{ blog.content[:150] }}{% if blog.content|length > 150 %}...{% endif %}</p>
+
+                        <div class="d-flex justify-between align-center">
+                            <a href="{{ url_for('view_blog', id=blog.id) }}" class="btn btn-sm">Read More</a>
+
+                            <div class="blog-stats">
+                                {% if session.user_id %}
+                                    <button class="like-btn" data-blog-id="{{ blog.id }}">
+                                        ❤️ <span class="like-count">{{ blog.likes }}</span>
+                                    </button>
+                                {% else %}
+                                    <span class="like-count">❤️ {{ blog.likes }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center" style="padding: 4rem 0;">
+            <h3>No blogs found</h3>
+            <p>Be the first to share your story!</p>
+            {% if session.user_id %}
+                <a href="{{ url_for('write_blog') }}" class="btn">Write First Blog</a>
+            {% else %}
+                <a href="{{ url_for('signup') }}" class="btn">Join & Start Writing</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up - Blog Writing Platform{% endblock %}
+
+{% block content %}
+<section class="container" style="max-width: 500px; margin: 4rem auto;">
+    <div class="card">
+        <div class="card-header text-center">
+            <h2>Join Our Community</h2>
+            <p>Create your account and start sharing your stories</p>
+        </div>
+
+        <div class="card-body">
+            <form method="POST" id="signup-form">
+                <div class="form-group">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input type="text" id="name" name="name" class="form-control" required 
+                           placeholder="Enter your full name" autocomplete="name">
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" id="email" name="email" class="form-control" required 
+                           placeholder="Enter your email" autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" required 
+                           placeholder="Create a strong password" minlength="6" autocomplete="new-password">
+                    <div id="password-strength" style="margin-top: 0.5rem; font-size: 0.875rem;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password" class="form-label">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" class="form-control" required 
+                           placeholder="Confirm your password" autocomplete="new-password">
+                </div>
+
+                <button type="submit" class="btn" style="width: 100%;">
+                    Create Account
+                </button>
+            </form>
+        </div>
+
+        <div class="card-footer text-center">
+            <p>Already have an account? <a href="{{ url_for('login') }}">Sign in here</a></p>
+        </div>
+    </div>
+</section>
+{% endblock %}
